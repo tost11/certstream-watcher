@@ -8,8 +8,8 @@ The Certstream watcher is a web page to show newliy registered certificates trac
 - Matches for your filters will be saved in the database for late use
 
 ## Dependencies
-[Certstream](https://certstream.calidog.io/)
-[Certstream-Java](https://github.com/CaliDog/certstream-java)
+- [Certstream](https://certstream.calidog.io/)
+- [Certstream-Java](https://github.com/CaliDog/certstream-java)
 
 ## How to install
 
