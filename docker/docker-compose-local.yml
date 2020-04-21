@@ -1,0 +1,13 @@
+version: "3"
+services:
+  certchecker-db:
+    image: "postgres:latest"
+    container_name: certchecker-db
+    ports:
+      - "127.0.0.1:5433:5432"
+    environment:
+      POSTGRES_DB: 'certchecker'
+      POSTGRES_USER: 'postgres_user'
+      POSTGRES_PASSWORD: 'postgres_pw'
+    #    volumes:
+    #      - bucket-list-data:/var/lib/postgresql/data

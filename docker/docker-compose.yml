@@ -1,0 +1,22 @@
+version: "3"
+services:
+  cerstream-watcher:
+    container_name: certstream-watcher
+    image: openjdk:11
+    volumes:
+      - "../backend/target/:/dist"
+      - "../backend/config/:/res"
+      - "../frontend/build/:/res/public"
+    command: /bin/bash -c 'sleep 5 && java -jar /dist/backend-0.0.1-SNAPSHOT.jar'
+    working_dir: /res
+    ports:
+      - "10055:8080"
+  certchecker-db-its:
+    image: "postgres:latest"
+    container_name: certstream-watcher-db
+    environment:
+      POSTGRES_DB: 'certstream-watcher_db'
+      POSTGRES_USER: 'postgres_user'
+      POSTGRES_PASSWORD: 'postgres_pw'
+    volumes:
+      - /opt/cerstream-watcher:/var/lib/postgresql/data
