@@ -32,6 +32,8 @@ Some interresting config paramters for the application for all view [Certstream]
 |mail.confirm-url|Url used for confirming mail Adress|
 |mail.redirect-url|Redirect page after mail confirming|
 |ignoredExpressions|Regexes for ignoring certificates seperated by Komma|
+|user.auto-activate|enables useres by registration (so everyone can register)|
+|logEverything|logs every incoming certificate (DO NOT USE !!! aferter 2 days select isn't responding XD)|
 
 The 'ignoredExpressions' Paramter is interresting for filtering uninterresting certificates befor checking hits to take some load from the application.  f.E. .*\\.keenetic.io,.*\\.plex\\.direct,.*\\.amazonaws\\.com
 
@@ -52,6 +54,7 @@ Whenn sending mails is wanted add it under user settings. And wait for verficati
 - Implement search term with regex
 - add admin user role for enabling user accounts
 - implement delete functionality for watcher
+- implement cleanup job for old entries
 
 ## Images
 #### Overview of all tracked domains with results
