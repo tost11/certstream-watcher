@@ -36,6 +36,22 @@ Some interresting config paramters for the application for all view [Certstream]
 The 'ignoredExpressions' Paramter is interresting for filtering uninterresting certificates befor checking hits to take some load from the application.  f.E. .*\\.keenetic.io,.*\\.plex\\.direct,.*\\.amazonaws\\.com
 
 ## How to use
+First of all you have to create a user (maby the password restrictions are a bit to exaggerated XD).
+After logging in create a watcher and wait for some results (Try not to use somthing that matches everything, that will slow down the application massive when the database gets enormouse, because you are tracking the howl Internet XD).
+Whenn sending mails is wanted add it under user settings. And wait for verfication mail. 
+### Watcher Paramters
+| Paramter | Description |
+| --- | --- |
+|search term|Filters results continging term|
+|regex|uses serch term as regex (not implemented jet)|
+|active|En-Disables showing and updating results on main page|
+|send mail|En-Disables sending mail to mail|
+|mail on update|Also sends you a mail on an updated certificate (resend timeout is 3 days)|
+
+## TODO
+- Implement search term with regex
+- add admin user role for enabling user accounts
+- implement delete functionality for watcher
 
 ## Images
 #### Overview of all tracked domains with results
