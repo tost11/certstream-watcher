@@ -55,6 +55,8 @@ Whenn sending mails is wanted add it under user settings. And wait for verficati
 - add admin user role for enabling user accounts
 - implement delete functionality for watcher
 - implement cleanup job for old entries
+- other notification options (f.E Telegram Bot)
+- make frontend good-looking
 
 ## Images
 #### Overview of all tracked domains with results
