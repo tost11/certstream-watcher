@@ -175,7 +175,7 @@
         <dependency>
             <groupId>io.calidog.certstream</groupId>
             <artifactId>certstream-java</artifactId>
-            <version>0.4</version>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
