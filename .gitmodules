@@ -1,0 +1,3 @@
+[submodule "certstream-java"]
+	path = certstream-java
+	url = https://github.com/nitram22/certstream-java.git

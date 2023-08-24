@@ -5,12 +5,14 @@ import de.tostsoft.certchecker.model.*;
 import de.tostsoft.certchecker.repository.DomainUpdateRepository;
 import de.tostsoft.certchecker.repository.DomainWatcherRepository;
 import de.tostsoft.certchecker.repository.LoggedDomainRepository;
+import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -48,6 +50,13 @@ public class CheckCertificateService{
     @Value("${logEverything:false}")
     private boolean logEverything;
 
+    private List<DomainWatcher> databaseWatchers = new ArrayList<>();
+
+    @Scheduled(fixedDelay = 1000)
+    private void UpdateAllDomains(){
+        databaseWatchers = domainWatcherRepository.findAll();
+    }
+
     public void handleDomain(DomainInfo domainInfo){
         counter++;
         if(counter%1000 == 0){
@@ -84,6 +93,42 @@ public class CheckCertificateService{
                         "Matches Domain Watcher with search Term"+(domainWatcher.getRegex()?"(regex)":"")+": "+domainWatcher.getSearchTerm());
     }
 
+    private List<DomainWatcher> checkDomainForMatch(String domainName){
+        List<DomainWatcher> res = new ArrayList<>();
+        var all = databaseWatchers;
+        for (DomainWatcher domainWatcher : all) {
+            if(domainWatcher.getRegex()){
+                Pattern pattern = Pattern.compile(domainWatcher.getSearchTerm());
+                var matcher = pattern.matcher(domainName);
+                if(matcher.matches()){
+                    res.add(domainWatcher);
+                }
+            }else{
+                String searchTerm = domainWatcher.getSearchTerm();
+                // ., +, *, ?, ^, $, (, ), [, ], {, }, |, \.
+                var searchTermRegex = searchTerm.replace("\\","\\\\");
+                searchTermRegex = searchTermRegex.replace(".","\\.");
+                searchTermRegex = searchTermRegex.replace("?","\\?");
+                searchTermRegex = searchTermRegex.replace("^","\\^");
+                searchTermRegex = searchTermRegex.replace("$","\\$");
+                searchTermRegex = searchTermRegex.replace("(","\\(");
+                searchTermRegex = searchTermRegex.replace(")","\\)");
+                searchTermRegex = searchTermRegex.replace("[","\\[");
+                searchTermRegex = searchTermRegex.replace("]","\\]");
+                searchTermRegex = searchTermRegex.replace("{","\\{");
+                searchTermRegex = searchTermRegex.replace("}","\\}");
+                searchTermRegex = searchTermRegex.replace("|","\\|");
+                searchTermRegex = StringUtils.replace(searchTermRegex,"*",".*");
+                Pattern pattern = Pattern.compile(searchTermRegex);
+                var matcher = pattern.matcher(domainName);
+                if(matcher.matches()) {
+                    res.add(domainWatcher);
+                }
+            }
+        }
+        return res;
+    }
+
     private void internHandleDomain(DomainInfo domainInfo){
 
         //check if ignored
@@ -118,10 +163,12 @@ public class CheckCertificateService{
         DomainUpdate domainUpdate=domainUpdateRepository.save(DomainUpdate.builder().loggedDomain(loggedDomain.getRight()).date(domainInfo.getDate()).build());
         loggedDomain.getValue().getDomainUpdates().add(domainUpdate);//set after save for return to watchers*/
 
-        List<DomainWatcher> domainWatchers=domainWatcherRepository.findTest(domainInfo.getDomain());
+        //List<DomainWatcher> domainWatchers=domainWatcherRepository.findTest(domainInfo.getDomain());
+        List<DomainWatcher> domainWatchers = checkDomainForMatch(domainInfo.getDomain());
         if(domainWatchers.isEmpty() && !logEverything){
             return;
         }
+
 
         loggedDomain=LoggedDomain.builder()
                 .name(domainInfo.getDomain())

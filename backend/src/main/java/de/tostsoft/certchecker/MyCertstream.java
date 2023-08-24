@@ -38,25 +38,30 @@ public class MyCertstream{
 
     public static void onMessageString(Consumer<String> handler){
         (new Thread(()->{
-            handler.getClass();
-            BoringParts theBoringParts=new BoringParts(handler::accept);
-            try{
-                HashSet<Integer> recoverableCloseCodes=(HashSet<Integer>)FieldUtils.readField(theBoringParts, "recoverableCloseCodes", true);
-                recoverableCloseCodes.add(1000);
-            }catch(IllegalAccessException ex){
-                logger.error("Could not set reconnect codes", ex);
-            }
 
-            while(theBoringParts.isNotClosed()){
-                Thread.yield();
+            while(true) {
+                logger.info("(Re)Connect certstream");
 
-                try{
-                    Thread.sleep(1000L);
-                }catch(InterruptedException var3){
+                BoringParts theBoringParts = new BoringParts(handler::accept);
+                try {
+                    HashSet<Integer> recoverableCloseCodes = (HashSet<Integer>) FieldUtils.readField(theBoringParts,
+                        "recoverableCloseCodes", true);
+                    recoverableCloseCodes.add(1000);
+                } catch (IllegalAccessException ex) {
+                    logger.error("Could not set reconnect codes", ex);
                 }
 
-                if(Thread.interrupted()){
-                    break;
+                while (theBoringParts.isNotClosed()) {
+                    Thread.yield();
+
+                    try {
+                        Thread.sleep(1000L);
+                    } catch (InterruptedException var3) {
+                    }
+
+                    if (Thread.interrupted()) {
+                        break;
+                    }
                 }
             }
 

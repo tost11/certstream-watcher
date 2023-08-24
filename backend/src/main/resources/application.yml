@@ -1,0 +1,17 @@
+spring.jpa.database: POSTGRESQL
+#spring.jpa.hibernate.ddl-auto=update
+#spring.jpa.hibernate.ddl-auto: create
+spring.datasource.url: jdbc:postgresql://localhost:5433/certchecker
+spring.datasource.username: postgres_user
+spring.datasource.password: postgres_pw
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation: true
+jwt.secret: MyJwtSecret
+spring.jpa.properties.hibernate.format_sql: true
+spring.jpa.database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+spring.mail.host: "tost-soft.de"
+spring.mail.port: 587
+spring.mail.properties.mail.smtp.auth: true
+spring.mail.properties.mail.smtp.starttls.enable: true
+mail.confirm-url: http://localhost:8080/api/user/confirm/
+mail.redirect-url: http://localhost:8080/user
+ignoredExpressions: "Ignored url regexes seperated by komma z.B. .*\\.amazonaws\\.com,myurl.com,.*\\.git\\..*,.*\\.gitlab\\.gitlab\\..*,git\\..*,gitlab\\.gitlab\\..*"

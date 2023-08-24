@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
@@ -19,6 +21,8 @@ import java.util.Date;
 import java.util.HashMap;
 
 @SpringBootApplication
+@Configuration
+@EnableScheduling
 public class CertcheckerApplication implements CommandLineRunner{
     public static void main(String[] args){
         SpringApplication.run(CertcheckerApplication.class, args);
@@ -99,6 +103,7 @@ public class CertcheckerApplication implements CommandLineRunner{
         for(String arg : args){
             if(arg.equals("debug")){
                 debug=true;
+                break;
             }
         }
     }
