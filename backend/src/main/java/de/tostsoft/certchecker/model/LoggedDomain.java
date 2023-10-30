@@ -12,6 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(indexes = @Index(columnList = "name"))
 public class LoggedDomain{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
